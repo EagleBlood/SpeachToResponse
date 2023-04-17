@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Speech Recognition</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <h1>Speech Recognition</h1>
+
+        <div id="mainContainer">
+            <div id="firstContainer">
+                <div id="box1">
+					<label for="apikey-input">Enter API Key:</label>
+					<input type="text" id="apikey-input">
+				</div>
+				
+
+				<p>Click the button to start recording. Click the button again to stop recording. Click the "Send to Chatbot" button to send the recording to the chatbot.</p>
+				<div id="box2">
+                    <button id="toggle-button" onclick="toggleRecording()">Start Recording</button>
+                    <button id="stop-button" onclick="stopRecording()" disabled="disabled">Stop Recording</button>
+                    <button id="send-button" onclick="sendToChatbot()">Send to Chatbot</button>
+                    <button id="clear-button" onclick="clearConversation()">Clear Chatbot</button>
+                </div>
+
+                <div id="box3">
+                    <div id="result" contenteditable></div>
+                </div>
+            </div>
+
+            <div id="secondContainer">
+                <p id="chatResponseText"></p>
+            </div>
+        </div>
+
+        <script src="js/script.js"></script>
+
+    </body>
+</html>
