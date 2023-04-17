@@ -50,11 +50,17 @@ button
 {
     color: white;
     font-size: 16px;
-    padding: 5px 0;
     text-align: center;
 }
 
 #box1 {
+    padding-top: 10px;
+    padding-bottom: 30px;
+    text-align: center;
+    color: white;
+  }
+
+#box2 {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -62,7 +68,7 @@ button
     margin: 10px 0;
   }
 
-#box2
+#box3
 {
     display: flex;
     padding: 10px 10%;

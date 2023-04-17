@@ -1,112 +1,39 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Speech Recognition</title>
-	<link rel="stylesheet" href="style.css">
-</head>
-<body>
-	<h1>Speech Recognition</h1>
-	
-	<div id="mainContainer">
-		<div id="firstContainer">
-			<p>Click the button to start recording. When pressed your voice will be recorded untill <b>Stop Recording</b> button is pressed.</p>
-			<div id="box1">
-				<button id="toggle-button" onclick="toggleRecording()">Start Recording</button>
-				<button id="stop-button" onclick="stopRecording()" disabled>Stop Recording</button>
-				<button id="send-button" onclick="sendToChatbot()" disabled>Send to Chatbot</button>
-				<button id="clear-button" onclick="clearConversation()">Clear Chatbot</button>
-			</div>
-		
+    <head>
+        <title>Speech Recognition</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <h1>Speech Recognition</h1>
 
-			<div id="box2">
-				<div id="result"></div>
-			</div>
-		</div>
+        <div id="mainContainer">
+            <div id="firstContainer">
+                <div id="box1">
+					<label for="apikey-input">Enter API Key:</label>
+					<input type="text" id="apikey-input">
+				</div>
+				
 
-		<div id="secondContainer">
-			<p id="chatResponseText"></p>
-	  </div>
-	</div>
+				<p>Click the button to start recording. Click the button again to stop recording. Click the "Send to Chatbot" button to send the recording to the chatbot.</p>
+				<div id="box2">
+                    <button id="toggle-button" onclick="toggleRecording()">Start Recording</button>
+                    <button id="stop-button" onclick="stopRecording()" disabled="disabled">Stop Recording</button>
+                    <button id="send-button" onclick="sendToChatbot()">Send to Chatbot</button>
+                    <button id="clear-button" onclick="clearConversation()">Clear Chatbot</button>
+                </div>
 
-	
+                <div id="box3">
+                    <div id="result" contenteditable></div>
+                </div>
+            </div>
 
+            <div id="secondContainer">
+                <p id="chatResponseText"></p>
+            </div>
+        </div>
 
-	<script>
-		var recognition = new webkitSpeechRecognition();
-		recognition.lang = "pl-PL";
-		recognition.continuous = true;
-		recognition.interimResults = true;
-		var finalTranscript = '';
-		recognition.onresult = function(event) {
-			var interimTranscript = '';
-			for (var i = event.resultIndex; i < event.results.length; ++i) {
-				if (event.results[i].isFinal) {
-					finalTranscript += event.results[i][0].transcript;
-				} else {
-					interimTranscript += event.results[i][0].transcript;
-				}
-			}
-			document.getElementById('result').innerHTML = finalTranscript;
-			document.getElementById('send-button').disabled = false;
-		};
+        <script src="js/script.js"></script>
 
-		var isRecording = false;
-		function toggleRecording() {
-			if (isRecording) {
-				recognition.stop();
-				document.getElementById('toggle-button').innerHTML = 'Start Recording';
-				document.getElementById('stop-button').disabled = true;
-				document.getElementById('send-button').disabled = true;
-				isRecording = false;
-			} else {
-				recognition.start();
-				document.getElementById('toggle-button').innerHTML = 'Stop Recording';
-				document.getElementById('stop-button').disabled = false;
-				isRecording = true;
-			}
-		}
-
-		function stopRecording() {
-			recognition.stop();
-			document.getElementById('toggle-button').innerHTML = 'Start Recording';
-			document.getElementById('stop-button').disabled = true;
-			isRecording = false;
-		}
-
-		const temperature = 0.7;
-		const maxTokens = 460;
-
-		async function sendToChatbot() {
-			var result = document.getElementById("result").innerText.trim();
-			if (result !== "") {
-				fetch("https://api.openai.com/v1/chat/completions", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					"Authorization": `Bearer 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`
-				},
-				body: JSON.stringify({
-					"temperature": temperature,
-					"max_tokens": maxTokens,
-					"model": "gpt-3.5-turbo",
-					"messages": [{"role": "user", "content": result}]
-				})
-				})
-				.then(response => response.json())
-    			.then(data => {
-					console.log(data.choices[0].message.content)
-					const chatbotResponse = data.choices[0].message.content;
-      				document.getElementById("chatResponseText").innerText = chatbotResponse;
-				})
-    			.catch(error => console.error(error));
-			}
-		}
-
-		function clearConversation() {
-			document.getElementById("result").innerText = "";
-			document.getElementById("chatResponseText").innerText = "";
-		}
-	</script>
-
-</body>
+    </body>
 </html>
